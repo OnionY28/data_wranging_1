@@ -11,3 +11,17 @@ library(tidyverse)
 
 This document will show how to import data.
 
+## Import the FAS Litters CSV
+
+```{r}
+litters_df = read_csv("data/FAS_litters.csv")
+
+head(litters_df)
+tail(litters_df,10)
+```
+
+```{r eval=FALSE}
+view(litters_df)
+```
+
+

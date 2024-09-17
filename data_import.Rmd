@@ -7,9 +7,13 @@ I'm an R Markdown document!
 
 ```{r setup, echo = FALSE,message = FALSE}
 library(tidyverse)
+library(readxl)
+library(haven)
 ```
 
 This document will show how to import data.
+
+# Import excel file
 
 ## Import the FAS Litters CSV
 
@@ -29,5 +33,64 @@ tail(litters_df,10)
 ```{r eval=FALSE}
 view(litters_df)
 ```
+
+## Import FAS Pups
+
+```{r}
+pups_df = read_csv("data/FAS_pups.csv")
+
+pups_df = janitor::clean_names(pups_df)
+```
+
+Use absolute path(the one that use \Users) (not useful cause the path will change every time you move the file)
+
+
+### Look at read_csv options
+
+```{r}
+litters_df = read_csv(file = "data/FAS_litters.csv",
+                      col_names = F,
+                      skip = 1)
+# Always use col_names = F and skip = 1 at the same time, when you have column name but do not wanna show it. Otherwise the col_name will become the first line of data. 
+```
+### what about missing data
+
+```{r}
+litters_df = read_csv(file = "data/FAS_litters.csv",
+                      na = c("NA"," ","."))
+
+litters_df = janitor::clean_names(litters_df)
+
+pull(litters_df, gd0_weight) # what does this line do?
+
+```
+
+
+What if we code `group` as a factpr variable?
+
+```{r}
+# make a specific variable to be factor variable rather than default to chr
+litters_df = 
+  read_csv(file = "data/FAS_litters.csv",
+            na = c("NA"," ","."),
+           col_types = cols(Group = col_factor()))
+```
+# Import excel file
+
+```{r}
+mlb_df = read_excel("data/mlb11.xlsx",sheet = "mlb11")
+# sheet is for excel file that has multiple sheets
+# range is used for the range you want to be imported in excel, eg, from A1 to E6
+head(mlb_df)
+```
+
+# Import SAS data
+
+```{r}
+pulse_df = read_sas("data/public_pulse_data.sas7bdat")
+
+```
+Never use read.csv(), also never $. : (
+
 
 

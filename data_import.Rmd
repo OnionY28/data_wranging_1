@@ -15,7 +15,13 @@ This document will show how to import data.
 
 ```{r}
 litters_df = read_csv("data/FAS_litters.csv")
+litters_df = janitor::clean_names(litters_df)
+# janitor is a package used for cleaning data
+# clean_names installed inside the janitor package used to clean the variables name, replace all spaces by _, change every characters into lower case.
+```
 
+
+```{r}
 head(litters_df)
 tail(litters_df,10)
 ```

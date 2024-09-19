@@ -138,4 +138,12 @@ arrange(litters_df,pups_born_alive,gd0_weight) # rank frost pups and then gd0
   mutate(wt_gain = gd18_weight - gd0_weight)
 )
 ```
+```{r}
+read_csv("data/FAS_litters.csv",na = c("NA","",".")) %>% 
+  janitor::clean_names() %>% 
+  mutate(wt_gain = gd18_weight - gd0_weight) 
+
+write_csv(litters_df,"data/cleaned_fas_litters.csv")
+
+```
 

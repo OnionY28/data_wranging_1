@@ -90,11 +90,52 @@ drop_na(litters_df) # drop the row with any NA inside
 drop_na(litters_df,gd0_weight) # drop the row with NA inside gd0_weight
 ```
 
+```{r}
+filter(pups_df,sex ==1)
 
-
+filter(pups_df,pd_walk <11,sex == 2)
+```
 
 ## `mutate`
 
+create a new variable 
 
-## `arrange`
+```{r}
+mutate(litters_df,wt_gain = gd18_weight - gd0_weight)
+
+mutate(litters_df,sq_pups = pups_born_alive^2)
+
+mutate(litters_df,group = str_to_lower(group)) # overwrite the group names to all lower case
+
+## combine all these together
+mutate(
+  litters_df,
+  wt_gain = gd18_weight - gd0_weight,
+  group = str_to_lower(group)
+       )
+```
+
+
+## `arrange` 
+
+reorder the rows 
+
+```{r}
+arrange(litters_df,gd0_weight) # rank gd0_weight from lowest to highest(default)
+arrange(litters_df,desc(gd0_weight)) # rank gd0_weight from highest to lowest
+
+arrange(litters_df,pups_born_alive,gd0_weight) # rank frost pups and then gd0
+```
+
+## PIPING !!!!!!
+
+```{r}
+(litters_df =
+  read_csv("data/FAS_litters.csv",na = c("NA","",".")) %>% 
+  janitor::clean_names() %>% 
+  select(-pups_born_alive) %>% 
+  filter(group == "Con7") %>% 
+  mutate(wt_gain = gd18_weight - gd0_weight)
+)
+```
 

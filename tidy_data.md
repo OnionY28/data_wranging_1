@@ -102,11 +102,11 @@ ana_df %>%
   pivot_wider(
     names_from = time,
     values_from = mean
-  )
+  ) %>% 
+  knitr::kable()
 ```
 
-    ## # A tibble: 2 × 3
-    ##   group     pre  post
-    ##   <chr>   <dbl> <dbl>
-    ## 1 trt       4      10
-    ## 2 control   4.2     5
+| group   | pre | post |
+|:--------|----:|-----:|
+| trt     | 4.0 |   10 |
+| control | 4.2 |    5 |

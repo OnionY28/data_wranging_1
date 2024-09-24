@@ -86,6 +86,7 @@ ana_df %>%
   pivot_wider(
     names_from = time,
     values_from = mean
-  )
+  ) %>% 
+  knitr::kable()
 ```
 

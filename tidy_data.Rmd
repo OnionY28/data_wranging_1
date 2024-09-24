@@ -9,6 +9,7 @@ I'm an R Markdown document!
 library(tidyverse)
 library(readxl)
 library(haven)
+library(tidyr)
 ```
 
 This document will show how to tidy data.
@@ -88,5 +89,72 @@ ana_df %>%
     values_from = mean
   ) %>% 
   knitr::kable()
+
+# miss something around 10:46
+
+
+```
+
+## Bind tables
+
+```{r}
+fellowship_ring =
+  read_excel("data/LotR_Words.xlsx",range = "B3:D6") %>% 
+  mutate(movie = "fellowship_ring")
+
+two_towers =
+  read_excel("data/LotR_Words.xlsx",range = "F3:H6") %>% 
+  mutate(movie = "two_towers")
+
+return_king =
+  read_excel("data/LotR_Words.xlsx",range = "J3:L6") %>% 
+  mutate(movie = "return_king")
+
+lotr_df =
+  bind_rows(fellowship_ring,two_towers,return_king) %>% 
+  janitor::clean_names() %>% 
+  pivot_longer(
+    cols = female:male,
+    names_to = "sex",
+    values_to = "words"
+    ) %>% 
+  relocate(movie) %>% 
+  mutate(race = str_to_lower(race))
+```
+
+## Join FAS datasets
+
+Import `litters` dataset
+
+```{r}
+(litters_df =
+  read_csv("data/FAS_litters.csv",na = c("NA","",".")) %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    wt_gain = gd18_weight - gd0_weight
+) %>% 
+  separate(group,into = c("dose","day_of_treatment"),sep = 3)
+) ## an error here, for seperate not found
+```
+
+Import `pups` next!
+
+```{r}
+pups_df =
+  read_csv("data/FAS_pups.csv",na = c("NA","",".")) %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    sex = case_match(
+      sex,
+      1 ~ "male",
+      2 ~ "female"
+    )
+  )
+```
+Join the dataset
+```{r}
+fas_df =
+  left_join(pups_df,litters_df,by = "litter_number") %>% 
+  relocate(litter_number,dose,day_of_treatment)
 ```
 

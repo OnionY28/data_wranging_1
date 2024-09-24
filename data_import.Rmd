@@ -87,10 +87,12 @@ head(mlb_df)
 # Import SAS data
 
 ```{r}
-pulse_df = read_sas("data/public_pulse_data.sas7bdat")
+pulse_df = read_sas("data/public_pulse_data.sas7bdat") 
 
 ```
 Never use read.csv(), also never $. : (
+
+
 
 
 
